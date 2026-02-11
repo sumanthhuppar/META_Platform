@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f6f7;
+      padding: 30px;
+      color: #1c1e21;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .optional {
+      color: #6b7280;
+      font-weight: normal;
+    }
+    .desc {
+      margin: 8px 0 16px;
+      color: #4b5563;
+    }
+    .btn-add {
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      padding: 10px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .card {
+      margin-top: 20px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr) 40px;
+      gap: 12px;
+      align-items: center;
+    }
+    label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #d1d5db;
+      background: #fff;
+    }
+    .checkbox {
+      margin-top: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .remove {
+      cursor: pointer;
+      font-size: 20px;
+      color: #6b7280;
+    }
+    .scrollbar {
+      margin-top: 16px;
+      height: 8px;
+      background: #d1d5db;
+      border-radius: 10px;
+      position: relative;
+    }
+    .scrollbar::after {
+      content: "";
+      position: absolute;
+      left: 10%;
+      width: 70%;
+      height: 100%;
+      background: #6b7280;
+      border-radius: 10px;
+    }
+</style>
+  <body>
+    <label>template category</label>
+    <select id="category" name="category">
+      <option value="">-- Select --</option>
+      <option value="marketing">marketing</option>
+      <option value="utility">utility</option>
+      <option value="other">other</option>
+    </select>
+    <label>Your template name</label>
+    <input class="border-1 border-current bg-grey border-black" type="text" id="template-name">
+    <label for="language">Choose a language:</label>
+    <select id="language" name="language">
+      <option value="">-- Select --</option>
+      <option value="english">English</option>
+      <option value="french">French</option>
+      <option value="german">German</option>
+    </select>
+    <div id="marketing-types" class="hidden block">
+      <label>
+        <input type="radio" name="plan" value="basic">
+        <strong>Default</strong><br>
+        <small>Send messages with media and customised buttons to engage your customers.</small>
+      </label>
+      <br>
+      <br>
+      <label>
+        <input type="radio" name="plan" value="standard">
+        <strong>Catalogue</strong><br>
+        <small>Send messages that drive sales by connecting your product catalogue.</small>
+      </label>
+      <br>
+      <br>
+      <label>
+        <input type="radio" name="plan" value="premium">
+        <strong>Calling permissions request</strong><br>
+        <small>Ask customers if you can call them on WhatsApp</small>
+      </label>
+    </div>
+    <label>type of variable</label>
+    <select id="parameter" name="parameter">
+      <option value="">-- Select --</option>
+      <option value="named">named</option>
+      <option value="numeric">numeric</option>
+    </select>
+    <label>Media sample</label>
+    <select id="Media" name="Media">
+      <option value="none">None</option>
+      <option value="image">image</option>
+      <option value="video">video</option>
+      <option value="document">document</option>
+      <option value="location">location</option>
+    </select>
+    <div id="media-upload" class="hidden">
+      <input class="block" type="file" id="images" multiple />
+      <button onclick="uploadImages()">Upload to Meta</button>
+      <br>
+      <br>
+      <div id="result">
+      </div>
+    </div>
+    <label>Header</label>
+    <input class="" type="text" id="Header-text">
+    <label for="body">Body</label>
+    <br>
+    <textarea id="body" name="body" rows="5" cols="40" placeholder="Enter message body here..."></textarea>
+    <label>Footer</label>
+    <input class="" type="text" id="Header-text">
+    <!-- Add button section -->
+    <div class="section-title">
+      Buttons 
+      <span class="optional">· Optional</span>
+    </div>
+    <div class="desc">
+      Create buttons that let customers respond to your message or take action.
+      You can add up to ten buttons. If you add more than three buttons, they will appear in a list.
+    </div>
+    <label for="addBtn" style="font-weight:600;">Buttons · Optional</label>
+    <br>
+    <br>
+    <button>
+      Add button
+    </button>
+    <div>
+      <select id="addBtn" class="btn-add">
+        <option value="">＋ Add button</option>
+        <option value="custom">Custom</option>
+        <option value="visit">Visit website</option>
+        <option value="call">Call phone number</option>
+        <option value="reply">Copy offer code</option>
+      </select>
+    </div>
+<!-- Row Container -->
+<div class="flex items-end gap-4">
+
+  <!-- Type of action -->
+  <div class="flex flex-col">
+    <label class="text-sm font-semibold text-gray-700 mb-1">
+      Type of action
+    </label>
+    <select
+      id="action"
+      name="action"
+      class="border border-gray-300 rounded-md px-3 py-2 w-48 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">-- Select --</option>
+      <option value="web">Visit website</option>
+      <option value="offer">Copy offer code</option>
+      <option value="phone">Call phone number</option>
+      <option value="whatsapp">Call on WhatsApp</option>
+    </select>
+  </div>
+
+  <!-- Header text -->
+  <div class="flex flex-col">
+    <label class="text-sm font-semibold text-gray-700 mb-1">
+     Button text
+    </label>
+    <input
+      type="text"
+      id="Header-text"
+      class="border border-gray-300 rounded-md px-3 py-2 w-56 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="Enter Button text"
+    />
+  </div>
+
+  <!-- URL Type -->
+  <div class="flex flex-col">
+    <label class="text-sm font-semibold text-gray-700 mb-1 invisible">
+      Url Type
+    </label>
+    <select
+      id="urlType"
+      class="border border-gray-300 rounded-md px-3 py-2 w-40 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    >
+      <option value="">Url type</option>
+      <option value="static">Static</option>
+      <option value="dynamic">Dynamic</option>
+    </select>
+  </div>
+
+<!-- Website URL -->
+<div class="flex flex-col">
+    <label class="text-sm font-semibold text-gray-700 mb-1">
+     Website URL
+    </label>
+    <input
+      type="text"
+      id="Header-text"
+      class="border border-gray-300 rounded-md px-3 py-2 w-56 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      placeholder="Enter Website Url"
+    />
+  </div>
+
+  <!-- Empty placeholder column -->
+  <div class="w-10"></div>
+
+</div>
+
+    <script>
+      document.getElementById("category").addEventListener("change", function () {
+        const selectedValue = this.value;
+        const marketing_types = document.getElementById("marketing-types");
+        if (selectedValue === "marketing") {
+          marketing_types.classList.remove("hidden");
+        }
+      }
+                                                          );
+      document.getElementById("Media").addEventListener("change", function () {
+        const selectedValue = this.value;
+        const media_upload = document.getElementById("media-upload");
+        if (selectedValue === "image" || "video" || "document" || "location") {
+          media_upload.classList.remove("hidden");
+        }
+        if(selectedValue === "none"){
+          media_upload.classList.add("hidden");
+        }
+      }
+                                                       );
+      async function uploadImages() {
+        const input = document.getElementById("images");
+        const files = input.files;
+        if (!files.length) {
+          alert("Select at least one image");
+          return;
+        }
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          formData.append("images", files[i]);
+        }
+        try {
+          const res = await fetch("http://localhost:3000/upload", {
+            method: "POST",
+            body: formData
+          }
+                                 );
+          if (!res.ok) {
+            throw new Error("Server error: " + res.status);
+          }
+          const data = await res.json();
+          document.getElementById("result").innerHTML =
+            "<b>Message:</b> " + data.message + "<br><br>" +
+            "<b>Total Files:</b> " + data.totalFiles + "<br><br>" +
+            "<b>Uploads:</b><pre>" +
+            JSON.stringify(data.uploads, null, 2) +
+            "</pre>";
+        }
+        catch (error) {
+          console.error("Upload failed:", error);
+          document.getElementById("result").innerHTML =
+            "<span style='color:red'>Upload failed: " + error.message + "</span>";
+        }
+      }
+      function getImageDetails() {
+      }
+    </script>
+  </body>
+</html>
