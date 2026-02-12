@@ -11,7 +11,7 @@ const app = express();
 const upload = multer({ dest: "uploads/" });
 
 app.use(cors({
-  origin: "https://mctn869h2g0j3q9ybb621glvf4t4.pub.sfmc-content.com",
+  origin: ["https://mctn869h2g0j3q9ybb621glvf4t4.pub.sfmc-content.com"],
   methods: ["POST"],
   allowedHeaders: ["Content-Type"]
 }));

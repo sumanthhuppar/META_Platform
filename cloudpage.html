@@ -98,27 +98,27 @@
     <label for="language">Choose a language:</label>
     <select id="language" name="language">
       <option value="">-- Select --</option>
-      <option value="english">English</option>
+      <option value="en_US">English</option>
       <option value="french">French</option>
       <option value="german">German</option>
     </select>
     <div id="marketing-types" class="hidden block">
       <label>
-        <input type="radio" name="plan" value="basic">
+        <input type="radio" name="marketing-types" value="default">
         <strong>Default</strong><br>
         <small>Send messages with media and customised buttons to engage your customers.</small>
       </label>
       <br>
       <br>
       <label>
-        <input type="radio" name="plan" value="standard">
+        <input type="radio" name="marketing-types" value="catalogue">
         <strong>Catalogue</strong><br>
         <small>Send messages that drive sales by connecting your product catalogue.</small>
       </label>
       <br>
       <br>
       <label>
-        <input type="radio" name="plan" value="premium">
+        <input type="radio" name="marketing-types" value="call">
         <strong>Calling permissions request</strong><br>
         <small>Ask customers if you can call them on WhatsApp</small>
       </label>
@@ -151,7 +151,7 @@
     <br>
     <textarea id="body" name="body" rows="5" cols="40" placeholder="Enter message body here..."></textarea>
     <label>Footer</label>
-    <input class="" type="text" id="Header-text">
+    <input class="" type="text" id="Footer-text">
     <!-- Add button section -->
     <div class="section-title">
       Buttons 
@@ -237,13 +237,92 @@
       placeholder="Enter Website Url"
     />
   </div>
-
-  <!-- Empty placeholder column -->
-  <div class="w-10"></div>
-
 </div>
-
+<button type="submit" id="submitBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 mt-6">Submit</button>
     <script>
+console.log("Script loaded................");
+        var category, tname, lang, variable, media,header,body,footer,marketing_type;
+        category = document.getElementById("category").value;
+        tname = document.getElementById("template-name").value;
+        lang = document.getElementById("language").value;
+        variable = document.getElementById("parameter").value;
+        media = document.getElementById("Media").value;
+        variable = document.getElementById("parameter").value;
+        media = document.getElementById("Media").value;
+        header = document.getElementById("Header-text").value;
+        body = document.getElementById("body").value;
+        footer = document.getElementById("Footer-text").value;
+        document.getElementsByName("marketing-types").forEach((elem) => {
+          if (elem.checked) {
+            console.log("Selected marketing type:", elem.value);
+            marketing_type = elem.value;
+            console.log("marketing_type:", marketing_type);
+          }
+        });
+
+        var payload = {
+          "name": tname,
+          "language": lang,
+          "category": category,
+          "parameter_format": variable,
+          "components": [
+              {
+                  "type": "header",
+                  "format": media,
+                  "example": {
+                      "header_handle": [
+                          header
+                      ]
+                  }
+              },
+              {
+                  "type": "body",
+                  "text": body,
+                  "example": {
+                      "body_text_named_params": [
+                          {
+                              "1": "Sumanth"
+                          },
+                          {
+                              "2": "20% OFF"
+                          },
+                          {
+                              "3": "$10"
+                          }
+                      ],
+                      "body_text_numeric_params": [
+                          "Sumanth",
+                          "20% OFF",
+                          "$10"
+                      ]
+                  }
+              },
+              {
+                  "type": "footer",
+                  "text": footer
+              }
+          ]
+            }
+        document.getElementById("submitBtn").addEventListener("click", function () {
+          category = document.getElementById("category").value;
+          tname = document.getElementById("template-name").value;
+          lang = document.getElementById("language").value;
+          variable = document.getElementById("parameter").value;
+          media = document.getElementById("Media").value;
+          header = document.getElementById("Header-text").value;
+          body = document.getElementById("body").value;
+          footer = document.getElementById("Footer-text").value;
+          console.log(category,tname,lang,variable,media,header,body,footer);
+          document.getElementsByName("marketing-types").forEach((elem) => {
+          if (elem.checked) {
+            console.log("Selected marketing type:", elem.value);
+            marketing_type = elem.value;
+            console.log("marketing_type:", marketing_type);
+          }
+        });
+        });
+
+
       document.getElementById("category").addEventListener("change", function () {
         const selectedValue = this.value;
         const marketing_types = document.getElementById("marketing-types");
@@ -278,8 +357,7 @@
           const res = await fetch("http://localhost:3000/upload", {
             method: "POST",
             body: formData
-          }
-                                 );
+          });
           if (!res.ok) {
             throw new Error("Server error: " + res.status);
           }
